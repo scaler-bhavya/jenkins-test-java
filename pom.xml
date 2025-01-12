@@ -2,11 +2,30 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.example</groupId>
     <artifactId>java-hello-world</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <!-- Dependencies for JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -16,21 +35,23 @@
                     <target>11</target>
                 </configuration>
             </plugin>
+
+            <!-- Maven Assembly Plugin for creating a runnable jar with all dependencies -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
+                        <id>make-assembly</id> <!-- this is used for binding in the execute phase -->
+                        <phase>package</phase> <!-- bind to the packaging phase -->
                         <goals>
-                            <goal>single</goal>
+                            <goal>single</goal> <!-- goals == mojos -->
                         </goals>
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.example.HelloWorld</mainClass>  <!-- Specify your main class here -->
+                                    <mainClass>com.example.HelloWorld</mainClass> <!-- fully qualified name of the main class -->
                                 </manifest>
                             </archive>
                             <descriptorRefs>
@@ -40,6 +61,20 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Maven Surefire Plugin to execute unit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <!-- Ensure that JUnit 5 is used for running tests -->
+                    <dependenciesToScan>
+                        <dependency>org.junit.jupiter.*</dependency>
+                    </dependenciesToScan>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
+
