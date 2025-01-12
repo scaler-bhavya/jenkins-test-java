@@ -43,15 +43,15 @@
                 <version>3.3.0</version>
                 <executions>
                     <execution>
-                        <id>make-assembly</id> <!-- this is used for binding in the execute phase -->
-                        <phase>package</phase> <!-- bind to the packaging phase -->
+                        <id>make-assembly</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>single</goal> <!-- goals == mojos -->
+                            <goal>single</goal>
                         </goals>
                         <configuration>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.example.HelloWorld</mainClass> <!-- fully qualified name of the main class -->
+                                    <mainClass>com.example.HelloWorld</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
@@ -68,13 +68,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
-                    <!-- Ensure that JUnit 5 is used for running tests -->
-                    <dependenciesToScan>
-                        <dependency>org.junit.jupiter.*</dependency>
-                    </dependenciesToScan>
+                    <useModulePath>false</useModulePath> <!-- Ensure JUnit 5 compatibility -->
                 </configuration>
             </plugin>
         </plugins>
     </build>
 </project>
-
