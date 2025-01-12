@@ -5,7 +5,6 @@ pipeline {
         DOCKER_REGISTRY = "docker.io"
         DOCKER_IMAGE = "bhavyascaler/java-hello-world"
         DEPLOYMENT_NAME = "java-hello-world"
-        K8S_NAMESPACE = "default"
     }
 
     stages {
@@ -21,30 +20,19 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}:${env.BUILD_ID}")
+                    sh 'docker build -t bhavyascaler/java-hello-world:latest .'
                 }
             }
         }
+        
 
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('', 'docker-hub-credentials') {
-                        docker.image("${DOCKER_IMAGE}:${env.BUILD_ID}").push()
-                    }
-                }
-            }
-        }
 
-        stage('Deploy to Kubernetes') {
+         stage('Push') {
             steps {
-                kubernetesDeploy(
-                    configs: 'deployment.yaml',
-                    kubeconfigId: 'k8s-credentials-id'
-                )
+                sh 'docker push bhavyascaler/java-hello-world:latest'
             }
         }
     }
